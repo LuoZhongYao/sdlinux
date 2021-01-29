@@ -67,15 +67,20 @@ tar xf Fedora-Container-Base-32-1.6.aarch64.tar.xz -C fedora/
 find fedora/ -name 'layer.tar' -exec tar xf {} -C /mnt/rootfs \;
 cp /usr/bin/qemu-static-aarch64 /mnt/usr/bin/
 mount -o bind /dev /mnt/dev
-mount -o bind /dev/pts /mnt/dev/pts
-mount -o bind /proc /mnt/proc
-mount -o bind /sys /mnt/sys
-cp /etc/resolv.conf /mnt/etc
-chroot /mnt /bin/bash
+mount -o bind /dev/pts /mnt/rootfs/dev/pts
+mount -o bind /proc /mnt/rootfs/proc
+mount -o bind /sys /mnt/rootfs/sys
+cp /etc/resolv.conf /mnt/rootfs/etc
+chroot /mnt/rootfs /bin/bash
 dnf update
+dnf install systemd-udev
 dnf autoremove
 dnf clean all
 passwd						# Set the root password, otherwise you may not be able to log in
+# No need
+# systemctl unmask console-getty
+# systemctl enable console-getty
+# systemctl set-default getty
 exit
 umount /mnt/rootfs/dev/pts
 umount /mnt/rootfs/dev
