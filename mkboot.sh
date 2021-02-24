@@ -28,7 +28,7 @@ case $1 in
         mkimg
         ;;
     --dts)
-        dtc -Idtd -Odts ${base}/${base}.img-second > ${base}.dts
+        dtc -Idtb -Odts ${base}/${base}.img-second > ${base}.dts
         ;;
     -d)
         rm -rf  ${base}
